@@ -15,13 +15,23 @@ setInterval(function() {
 	let sgtime = new Date().toLocaleString('en-US', {timeZone: 'Asia/Singapore'});
 	let now = new Date(sgtime);
 	
-	SetTime("MornReset" , MornReset );
-	SetTime("NoonReset" , NoonReset );
-	SetTime("ANoonReset", ANoonReset);
 	
-	function SetTime(TimeId, TimeArray){
+	document.getElementById("Daily7" ).innerHTML = GetTime(MornReset );
+	document.getElementById("Daily11").innerHTML = GetTime(NoonReset );
+	
+	document.getElementById("Mon7" ).innerHTML = GetTime(MornReset, 0);
+	document.getElementById("Mon11").innerHTML = GetTime(NoonReset, 0);
+	document.getElementById("Mon1" ).innerHTML = GetTime(ANoonReset,0);
+	
+	document.getElementById("Thu11").innerHTML = GetTime(NoonReset, 3);
+	document.getElementById("Sat7").innerHTML  = GetTime(MornReset, 5);
+	document.getElementById("Sun7").innerHTML  = GetTime(MornReset, 6);
+	
+	
+	
+	function GetTime(TimeArray, Day = -1){
 		let Hour = TimeArray[Regions[Region]].split('.')[0];
-		let Min = TimeArray[Regions[Region]].split('.')[1];
+		let Min  = TimeArray[Regions[Region]].split('.')[1];
 		
 		let Greater = new Date();
 		Greater.setHours(Hour);
@@ -29,17 +39,23 @@ setInterval(function() {
 		Greater.setSeconds(0);
 		
 		if (now.getHours() == Hour) {
-			if (now.getMinutes() > Min)
-				Greater.setDate(Greater.getDate() + 1);
-		}else if (now.getHours() > Hour)
-			Greater.setDate(Greater.getDate() + 1);
+			if (now.getMinutes() > Min) 
+				Greater.setDate(Greater.getDate() + (8 - (Greater.getDay() - Day)));
+		}else if (now.getHours() > Hour) 
+			Greater.setDate(Greater.getDate() + (8 - (Greater.getDay() - Day)));
+		
 		
 		let dailyReset = Greater - now;
+		let days = Math.floor(dailyReset / (1000 * 60 * 60 * 24));
+		days %= 7;
 		let hours = Math.floor((dailyReset % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 		let minutes = Math.floor((dailyReset % (1000 * 60 * 60)) / (1000 * 60));
 		let seconds = Math.floor((dailyReset % (1000 * 60)) / 1000);
 		
-		document.getElementById(TimeId).innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+		if (Day == -1 || days == 0)
+			return hours + "h " + minutes + "m " + seconds + "s ";
+		else 
+			return days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 	}
 }, 1000);
 	
