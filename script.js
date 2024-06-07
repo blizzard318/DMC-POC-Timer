@@ -7,14 +7,13 @@ const Regions = {
 const MornReset  = ["12.0",  "7.0",  "7.0", "4.3"];
 const NoonReset  = ["16.0", "11.0", "11.0", "4.3"];
 const ANoonReset = ["18.0", "13.0", "13.0", "6.3"];
-var Region = "EU";
+var Region;
 
 // Update the count down every 1 second
 setInterval(function() {
 	// Get today's date and time
 	let sgtime = new Date().toLocaleString('en-US', {timeZone: 'Asia/Singapore'});
 	let now = new Date(sgtime);
-	
 	
 	document.getElementById("Daily7" ).innerHTML = GetTime(MornReset );
 	document.getElementById("Daily11").innerHTML = GetTime(NoonReset );
@@ -26,8 +25,6 @@ setInterval(function() {
 	document.getElementById("Thu11").innerHTML = GetTime(NoonReset, 3);
 	document.getElementById("Sat7").innerHTML  = GetTime(MornReset, 5);
 	document.getElementById("Sun7").innerHTML  = GetTime(MornReset, 6);
-	
-	
 	
 	function GetTime(TimeArray, Day = -1){
 		let Hour = TimeArray[Regions[Region]].split('.')[0];
@@ -41,6 +38,10 @@ setInterval(function() {
 		if (now.getHours() == Hour) {
 			if (now.getMinutes() > Min) 
 				Greater.setDate(Greater.getDate() + (8 - (Greater.getDay() - Day)));
+			else if (now.getMinutes() == Min && now.getSeconds() == 0){
+				new Notification("Something Reset!");
+				navigator.vibrate(200);
+			}
 		}else if (now.getHours() > Hour) 
 			Greater.setDate(Greater.getDate() + (8 - (Greater.getDay() - Day)));
 		
@@ -79,7 +80,18 @@ function init() {
 
         sessionStorage.setItem('darkmode', setval);
     }
+	
+    document.getElementById('notification').addEventListener('change', () => {
+		if (document.getElementById('notification').checked && Notification.permission !== "granted")
+			Notification.requestPermission();
+	});
 
-	if (sessionStorage.getItem('region') === 'true')
+	const params = new Proxy(new URLSearchParams(window.location.search), {
+	  get: (searchParams, prop) => searchParams.get(prop),
+	});
+	
+	if (params.region != null) 
+		ShowPart2(params.region);
+	else if (sessionStorage.getItem('region') === 'true')
 		ShowPart2(sessionStorage.getItem('region'));
 }
