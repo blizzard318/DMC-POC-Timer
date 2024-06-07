@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>DMC POC Reset Timers</title>
+	<meta name="theme-color" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Devil May Cry: Peak of Combat Reset Timers by IceCubez">
+    <link rel="stylesheet" href="styles.css" />
+	<link rel="shortcut icon" href="favicon.ico">
+	<script src="script.js" charset="utf-8"></script>
+</head>
+<body>
+	<span style='float:right;display:inline-block;height:0px'>
+		<label for='darkmode'>Dark Mode</label>
+		<input type='checkbox' id='darkmode'>
+	</span>
+	
+	<div style="display:block;flex-wrap:wrap">
+		<div style="text-align:center;font-size:200%">Select your Server region</div>
+		<button onclick="ShowPart2(this.id)" id="NA">NA</button>
+		<button onclick="ShowPart2(this.id)" id="SA">SA</button>
+		<button onclick="ShowPart2(this.id)" id="EU">EU</button>
+		<button onclick="ShowPart2(this.id)" id="ASIA">ASIA</button>
+		<button onclick="ShowPart2(this.id)" id="ASIA">JP, KR, TW, HK, MO</button>
+	</div>
+	
+	<div id="Part2" style="display:none">
+		<div style="text-align:center;font-size:150%"><div id="region" style="display:inline"></div> region.</div><br/>
+		<span id="MornReset"></span><br/>
+		Once this timer ends, you can collect your Mail Rewards and send your Hunters using Dispatch.
+		<hr/>
+		
+		<span id="NoonReset"></span><br/>
+		Collect your Log-in Bonuses, Daily Free Rewards, Chain Purchase Red Orbs.<br/>
+		Complete your Hunter Mission, Resource Mission, Guild Daily Mission, Sky Arena Mission.<br/>
+		If you still have Weekly Rewards in your Co-op Challenge, you can do your Daily reward.<br/>
+		If you have Speed Elimination, the missions will have reset.<br/>
+		<hr/>
+		
+		<span id="ANoonReset"></span><br/>
+		Co-Op Challenge Reset: 
+<br/>
+	</div>
+	
+</body>
+<script>init();</script>
+</html>
