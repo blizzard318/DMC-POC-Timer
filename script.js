@@ -4,9 +4,9 @@ const Regions = {
 	"EU":2,
 	"ASIA":3
 };
-const MornReset  = ["12.0",  "7.0",  "7.0", "4.3"];
-const NoonReset  = ["16.0", "11.0", "11.0", "4.3"];
-const ANoonReset = ["18.0", "13.0", "13.0", "6.3"];
+const MornReset  = ["12.0",  "11.0",  "7.0", "4.3"];
+const NoonReset  = ["16.0", "15.0", "11.0", "4.3"];
+const ANoonReset = ["18.0", "17.0", "13.0", "6.3"];
 var Region;
 
 // Update the count down every 1 second
