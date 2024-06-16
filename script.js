@@ -22,7 +22,11 @@ setInterval(function() {
 	document.getElementById("Mon11").innerHTML = GetTime(NoonReset, 0);
 	document.getElementById("Mon1" ).innerHTML = GetTime(ANoonReset,0);
 	
+document.getElementById("Tue11").innerHTML = GetTime(NoonReset, 1);
+document.getElementById("Wed11").innerHTML = GetTime(NoonReset, 2);
+
 	document.getElementById("Thu11").innerHTML = GetTime(NoonReset, 3);
+document.getElementById("Fri11").innerHTML = GetTime(NoonReset, 4);
 	document.getElementById("Sat7").innerHTML  = GetTime(MornReset, 5);
 	document.getElementById("Sun7").innerHTML  = GetTime(MornReset, 6);
 	
