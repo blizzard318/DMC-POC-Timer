@@ -41,7 +41,7 @@ document.getElementById("Fri11").innerHTML = GetTime(NoonReset, 4);
 		
 		if (now.getHours() == Hour) {
 			if (now.getMinutes() > Min) 
-				Greater.setDate(Greater.getDate() + (8 - (Greater.getDay() - Day)));
+				Greater.setDate(Greater.getDate() + (7 - (Greater.getDay() - Day)));
 			else if (now.getMinutes() == Min && now.getSeconds() == 0){
 				new Notification("Something Reset!");
 				navigator.vibrate(200);
