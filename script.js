@@ -4,10 +4,11 @@ const Regions = {
 	"EU":2,
 	"ASIA":3
 };
-const MornReset  = ["12.0",  "11.0",  "7.0", "4.3"];
+const MornReset  = ["12.0", "11.0",  "7.0", "4.3"];
 const NoonReset  = ["16.0", "15.0", "11.0", "4.3"];
 const ANoonReset = ["18.0", "17.0", "13.0", "6.3"];
 var Region;
+let RunOnce = true;
 
 // Update the count down every 1 second
 setInterval(function() {
@@ -15,22 +16,51 @@ setInterval(function() {
 	let sgtime = new Date().toLocaleString('en-US', {timeZone: 'Asia/Singapore'});
 	let now = new Date(sgtime);
 	
-	document.getElementById("Daily7" ).innerHTML = GetTime(MornReset );
-	document.getElementById("Daily11").innerHTML = GetTime(NoonReset );
+	let timings = {
+		"Mon7"  : GetTime(MornReset, 0),
+		"Tue7"  : GetTime(MornReset, 1),
+		"Wed7"  : GetTime(MornReset, 2),
+		"Thu7"  : GetTime(MornReset, 3),
+		"Fri7"  : GetTime(MornReset, 4),
+		"Sat7"  : GetTime(MornReset, 5),
+		"Sun7"  : GetTime(MornReset, 6),
+		
+		"Mon11" : GetTime(NoonReset, 0),
+		"Tue11" : GetTime(NoonReset, 1),
+		"Wed11" : GetTime(NoonReset, 2),
+		"Thu11" : GetTime(NoonReset, 3),
+		"Fri11" : GetTime(NoonReset, 4),
+		"Sat11" : GetTime(NoonReset, 5),
+		"Sun11" : GetTime(NoonReset, 6),
+		
+		"Mon13" : GetTime(ANoonReset, 0)
+	};
 	
-	document.getElementById("Mon7" ).innerHTML = GetTime(MornReset, 0);
-	document.getElementById("Mon11").innerHTML = GetTime(NoonReset, 0);
-	document.getElementById("Mon1" ).innerHTML = GetTime(ANoonReset,0);
+	for (const [key, value] of Object.entries(timings)) {
+		document.getElementById(key).innerHTML = GetString(value);
+	}
 	
-document.getElementById("Tue11").innerHTML = GetTime(NoonReset, 1);
-document.getElementById("Wed11").innerHTML = GetTime(NoonReset, 2);
+	if (RunOnce) {
+		RunOnce = false;
+		SortDiv();
+	}
+	
+	function SortDiv (){
+		let nlist = document.getElementById('nlist');
+		let olist = document.getElementById('olist');
+		olist.innerHTML = nlist.innerHTML;
+		
+		let items = Object.keys(timings).map((key) => [key, timings[key]]);
+		items.sort((first, second) => second[1] - first[1]);
 
-	document.getElementById("Thu11").innerHTML = GetTime(NoonReset, 3);
-document.getElementById("Fri11").innerHTML = GetTime(NoonReset, 4);
-	document.getElementById("Sat7").innerHTML  = GetTime(MornReset, 5);
-	document.getElementById("Sun7").innerHTML  = GetTime(MornReset, 6);
+		console.log(items);
+		for(let i = 0; i < items.length; i++) {
+			//nlist.appendChild(document.getElementById[items[i][0]].parentNode);
+		}
+		olist.innerHTML = "";
+	}
 	
-	function GetTime(TimeArray, Day = -1){
+	function GetTime(TimeArray, Day){
 		let Hour = TimeArray[Regions[Region]].split('.')[0];
 		let Min  = TimeArray[Regions[Region]].split('.')[1];
 		
@@ -49,25 +79,31 @@ document.getElementById("Fri11").innerHTML = GetTime(NoonReset, 4);
 		}else if (now.getHours() > Hour) 
 			Greater.setDate(Greater.getDate() + (8 - (Greater.getDay() - Day)));
 		
-		
-		let dailyReset = Greater - now;
-		let days = Math.floor(dailyReset / (1000 * 60 * 60 * 24));
+		return Greater - now;
+	}
+	
+	function GetString(Countdown){
+		let days = Math.floor(Countdown / (1000 * 60 * 60 * 24));
 		days %= 7;
-		let hours = Math.floor((dailyReset % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		let minutes = Math.floor((dailyReset % (1000 * 60 * 60)) / (1000 * 60));
-		let seconds = Math.floor((dailyReset % (1000 * 60)) / 1000);
+		let hours = Math.floor((Countdown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		let minutes = Math.floor((Countdown % (1000 * 60 * 60)) / (1000 * 60));
+		let seconds = Math.floor((Countdown % (1000 * 60)) / 1000);
 		
-		if (Day == -1 || days == 0)
+		if (days == 0)
 			return hours + "h " + minutes + "m " + seconds + "s ";
 		else 
 			return days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 	}
 }, 1000);
-	
+
 async function ShowPart2(region) {
 	localStorage.setItem("region",region);
 	document.getElementById("Part2").style.display = "block";
 	Region = document.getElementById("region").innerText = region;
+	
+	const urlParams = new URLSearchParams(window.location.search);
+	urlParams.set('region', region);
+	window.location.search = urlParams;
 }
 
 function init() {
